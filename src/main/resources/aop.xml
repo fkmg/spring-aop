@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <!--配置被代理目标 -->
+    <bean id="myService" class="com.sxt.service.impl.MyServiceImpl"></bean>
+    <!-- 配置前置通知 -->
+    <bean id="beforeLogger" class="com.sxt.aop.BeforeLogger"></bean>
+    <!-- 后置通知 -->
+    <bean id="afterLogger" class="com.sxt.aop.AfterLogger"></bean>
+    <!-- 环绕通知 -->
+    <bean id="arroundLogger" class="com.sxt.aop.ArroundLogger"></bean>
+    <!-- 异常通知 -->
+    <bean id="throwLogger" class="com.sxt.aop.ThrowLogger"></bean>
+
+    <!-- 应用切面配置 -->
+    <aop:config>
+        <aop:pointcut id="mypointcut" expression="execution(* com.sxt.service.impl.*.*(..))"/>
+        <aop:advisor advice-ref="beforeLogger" pointcut-ref="mypointcut"/>
+        <aop:advisor advice-ref="afterLogger" pointcut-ref="mypointcut"/>
+        <aop:advisor advice-ref="arroundLogger" pointcut-ref="mypointcut"/>
+        <aop:advisor advice-ref="throwLogger" pointcut-ref="mypointcut"/>
+    </aop:config>
+
+</beans>
